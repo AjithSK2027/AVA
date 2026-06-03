@@ -3,6 +3,11 @@ async function buildCalendar() {
     const roomsResponse =
         await fetchRooms();
 
+    const selectedProperty =
+    document.getElementById(
+        "propertySelect"
+    ).value;
+
     const rooms =
         roomsResponse.rooms;
 
