@@ -12,9 +12,7 @@ async function buildCalendar(){
     (roomsResponse.rooms || [])
     .filter(
         room =>
-            String(room.PropertyID).trim()
-            ===
-            String(selectedProperty).trim()
+            room.propertyId === selectedProperty
     );
 
 console.log("ROOMS", rooms);
