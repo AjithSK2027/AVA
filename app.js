@@ -7,29 +7,7 @@ async function initializeApp(){
 
     try{
 
-        const properties =
-            await fetchProperties();
-
-        const rooms =
-            await fetchRooms();
-
-        const bookings =
-            await fetchBookings();
-
-        console.log(
-            "Properties",
-            properties
-        );
-
-        console.log(
-            "Rooms",
-            rooms
-        );
-
-        console.log(
-            "Bookings",
-            bookings
-        );
+        await buildCalendar();
 
     }
     catch(error){
