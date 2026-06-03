@@ -9,7 +9,10 @@ async function buildCalendar() {
     ).value;
 
     const rooms =
-        roomsResponse.rooms;
+    roomsResponse.rooms.filter(
+        room =>
+            room.PropertyID === selectedProperty
+    );
 
     const board =
         document.getElementById(
