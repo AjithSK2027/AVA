@@ -151,10 +151,10 @@ async function loadProperties(){
             );
 
         option.value =
-            property.PropertyID;
+            property.propertyId;
 
         option.textContent =
-            property.PropertyName;
+            property.propertyName;
 
         select.appendChild(
             option
