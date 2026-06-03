@@ -40,29 +40,28 @@ async function initializeApp(){
 
 async function updateDashboard(){
 
+    const selectedProperty =
+        document.getElementById(
+            "propertySelect"
+        ).value;
+
     const roomsResponse =
         await fetchRooms();
 
     const bookingsResponse =
         await fetchBookings();
 
-    const selectedProperty =
-        document.getElementById(
-            "propertySelect"
-        ).value;
-
     const rooms =
         (roomsResponse.rooms || [])
         .filter(
             room =>
-                String(room.PropertyID).trim()
-                ===
-                String(selectedProperty).trim()
+                room.propertyId ===
+                selectedProperty
         );
 
     const roomIds =
         rooms.map(
-            room => room.RoomID
+            room => room.roomId
         );
 
     const bookings =
@@ -70,21 +69,21 @@ async function updateDashboard(){
         .filter(
             booking =>
                 roomIds.includes(
-                    booking.RoomID
+                    booking.roomId
                 )
         );
 
     const confirmed =
         bookings.filter(
             booking =>
-                booking.Status ===
+                booking.status ===
                 "CONFIRMED"
         ).length;
 
     const holds =
         bookings.filter(
             booking =>
-                booking.Status ===
+                booking.status ===
                 "HOLD"
         ).length;
 
