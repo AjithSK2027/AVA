@@ -1,371 +1,342 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>C18 Channel Manager</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-  <script src="app.js" defer></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AVA | Availability & Reservations</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+
 </head>
+
 <body>
-  <section id="loginView" class="login-view">
-    <form id="loginForm" class="login-panel" autocomplete="off">
-      <div class="brand-lockup">
-        <img src="logo.png" alt="C18 Company" class="brand-mark">
-        <div>
-          <p class="eyebrow">Channel Manager</p>
-          <h1>C18 Company</h1>
-        </div>
-      </div>
-      <div class="login-copy">
-        <h2>Central reservations</h2>
-        <p>Good Earth Homestay and Camp Alpha</p>
-      </div>
-      <label class="field">
-        <span>User</span>
-        <select id="loginUser" required></select>
-      </label>
-      <label class="field">
-        <span>PIN</span>
-        <input id="loginPin" type="password" inputmode="numeric" placeholder="Enter PIN" required>
-      </label>
-      <button class="btn btn-primary btn-full" type="submit">
-        <i data-lucide="log-in"></i>
-        Sign in
-      </button>
-      <p class="helper-text">Demo: Admin PIN 1234, agent PINs 2222 and 3333.</p>
-    </form>
-  </section>
 
-  <section id="appView" class="app-shell" hidden>
+<!-- LOGIN -->
+
+<section id="loginScreen" class="login-screen">
+
+    <div class="login-card">
+
+        <div class="brand">
+
+            <h1>AVA</h1>
+
+            <p>Availability & Reservations</p>
+
+        </div>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label>Name</label>
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter your name"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>PIN</label>
+
+                <input
+                    type="password"
+                    id="pin"
+                    placeholder="Enter PIN"
+                    required
+                >
+
+            </div>
+
+            <button type="submit" class="btn-primary">
+
+                Sign In
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<!-- APP -->
+
+<div id="appShell" class="app-shell hidden">
+
+    <!-- SIDEBAR -->
+
     <aside class="sidebar">
-      <div class="sidebar-brand">
-        <img src="logo.png" alt="C18" class="sidebar-logo">
-        <div>
-          <strong>C18 Company</strong>
-          <span>PMS Console</span>
-        </div>
-      </div>
 
-      <nav class="side-nav" aria-label="Main navigation">
-        <button class="nav-btn active" type="button" data-view="dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
-        <button class="nav-btn" type="button" data-view="availability"><i data-lucide="calendar-days"></i><span>Availability</span></button>
-        <button class="nav-btn" type="button" data-view="bookings"><i data-lucide="book-open-check"></i><span>Bookings</span></button>
-        <button class="nav-btn" type="button" data-view="search"><i data-lucide="search-check"></i><span>Search</span></button>
-        <button class="nav-btn" type="button" data-view="reports"><i data-lucide="bar-chart-3"></i><span>Reports</span></button>
-        <button class="nav-btn admin-nav" type="button" data-view="admin"><i data-lucide="settings-2"></i><span>Admin</span></button>
-      </nav>
+        <div class="sidebar-header">
 
-      <div class="sidebar-footer">
-        <div class="session-card">
-          <span id="userName">User</span>
-          <small id="userRole">Role</small>
+            <h2>AVA</h2>
+
+            <span>
+                Hospitality Operations
+            </span>
+
         </div>
-        <div id="syncStatus" class="sync-status">Local demo mode</div>
-        <button id="logoutBtn" class="btn btn-soft btn-full" type="button"><i data-lucide="log-out"></i>Logout</button>
-      </div>
+
+        <nav class="sidebar-nav">
+
+            <button class="nav-item active">
+                Dashboard
+            </button>
+
+            <button class="nav-item">
+                Calendar
+            </button>
+
+            <button class="nav-item">
+                Availability
+            </button>
+
+            <button class="nav-item">
+                Reservations
+            </button>
+
+            <button class="nav-item">
+                Properties
+            </button>
+
+            <button class="nav-item">
+                Agents
+            </button>
+
+            <button class="nav-item">
+                Settings
+            </button>
+
+        </nav>
+
+        <div class="sidebar-footer">
+
+            <div id="currentUser">
+
+                Agent
+
+            </div>
+
+        </div>
+
     </aside>
 
-    <main class="workspace">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow" id="viewSubtitle">Live operations</p>
-          <h2 id="viewTitle">Dashboard</h2>
-        </div>
-        <div class="topbar-actions">
-          <button id="exportBookingsBtn" class="btn btn-soft" type="button"><i data-lucide="download"></i>Export</button>
-          <button id="openBookingBtn" class="btn btn-primary" type="button"><i data-lucide="plus"></i>New Booking</button>
-        </div>
-      </header>
+    <!-- MAIN -->
 
-      <section id="dashboardView" class="view active">
-        <div id="dashboardMetrics" class="metric-grid"></div>
-        <div class="dashboard-grid">
-          <section class="panel">
-            <div class="panel-heading">
-              <h3>Today's arrivals</h3>
-              <i data-lucide="plane-landing"></i>
-            </div>
-            <div id="arrivalsList" class="stack-list"></div>
-          </section>
-          <section class="panel">
-            <div class="panel-heading">
-              <h3>Today's departures</h3>
-              <i data-lucide="plane-takeoff"></i>
-            </div>
-            <div id="departuresList" class="stack-list"></div>
-          </section>
-          <section class="panel">
-            <div class="panel-heading">
-              <h3>Property occupancy</h3>
-              <i data-lucide="hotel"></i>
-            </div>
-            <div id="occupancyBars" class="bar-list"></div>
-          </section>
-          <section class="panel">
-            <div class="panel-heading">
-              <h3>Revenue summary</h3>
-              <i data-lucide="indian-rupee"></i>
-            </div>
-            <div id="dashboardRevenue" class="revenue-grid"></div>
-          </section>
-          <section class="panel panel-wide">
-            <div class="panel-heading">
-              <h3>Upcoming bookings</h3>
-              <i data-lucide="calendar-clock"></i>
-            </div>
-            <div id="upcomingList" class="booking-feed"></div>
-          </section>
-          <section class="panel">
-            <div class="panel-heading">
-              <h3>Notifications</h3>
-              <i data-lucide="bell"></i>
-            </div>
-            <div id="notificationList" class="stack-list"></div>
-          </section>
-        </div>
-      </section>
+    <main class="main-content">
 
-      <section id="availabilityView" class="view">
-        <div class="toolbar">
-          <label class="field compact">
-            <span>Property</span>
-            <select id="calendarPropertyFilter"></select>
-          </label>
-          <label class="field compact">
-            <span>Room type</span>
-            <select id="calendarRoomTypeFilter"></select>
-          </label>
-          <div class="segmented" role="group" aria-label="Calendar mode">
-            <button class="segment active" type="button" data-calendar-mode="month">Month</button>
-            <button class="segment" type="button" data-calendar-mode="week">Week</button>
-          </div>
-          <div class="date-controls">
-            <button id="calendarPrev" class="icon-btn" type="button" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
-            <button id="calendarToday" class="btn btn-soft" type="button">Today</button>
-            <button id="calendarNext" class="icon-btn" type="button" aria-label="Next"><i data-lucide="chevron-right"></i></button>
-          </div>
-        </div>
-        <div class="legend-row">
-          <span><b class="swatch available"></b>Available</span>
-          <span><b class="swatch confirmed"></b>Confirmed</span>
-          <span><b class="swatch tentative"></b>Tentative/Hold</span>
-          <span><b class="swatch blocked"></b>Blocked</span>
-        </div>
-        <div class="calendar-panel">
-          <div class="calendar-title" id="calendarLabel">Calendar</div>
-          <div id="availabilityCalendar" class="availability-calendar"></div>
-        </div>
-      </section>
+        <!-- TOPBAR -->
 
-      <section id="bookingsView" class="view">
-        <div class="toolbar">
-          <label class="field compact search-field">
-            <span>Search</span>
-            <input id="bookingSearch" type="search" placeholder="Guest, phone, room, source">
-          </label>
-          <label class="field compact">
-            <span>Property</span>
-            <select id="bookingPropertyFilter"></select>
-          </label>
-          <label class="field compact">
-            <span>Status</span>
-            <select id="bookingStatusFilter"></select>
-          </label>
-          <label class="field compact">
-            <span>Source</span>
-            <select id="bookingSourceFilter"></select>
-          </label>
-        </div>
-        <div class="table-panel">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Guest</th>
-                <th>Stay</th>
-                <th>Room</th>
-                <th>Source</th>
-                <th>Status</th>
-                <th>Balance</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="bookingTable"></tbody>
-          </table>
-        </div>
-      </section>
+        <header class="topbar">
 
-      <section id="searchView" class="view">
-        <form id="availabilitySearchForm" class="search-panel">
-          <label class="field">
-            <span>Check-in</span>
-            <input id="searchCheckIn" type="date" required>
-          </label>
-          <label class="field">
-            <span>Check-out</span>
-            <input id="searchCheckOut" type="date" required>
-          </label>
-          <label class="field">
-            <span>Property</span>
-            <select id="searchProperty"></select>
-          </label>
-          <label class="field">
-            <span>Room type</span>
-            <select id="searchRoomType"></select>
-          </label>
-          <button class="btn btn-primary" type="submit"><i data-lucide="search"></i>Search</button>
-        </form>
-        <div id="availabilityResults" class="availability-results"></div>
-      </section>
+            <div class="topbar-left">
 
-      <section id="reportsView" class="view">
-        <div class="toolbar report-toolbar">
-          <label class="field compact">
-            <span>Period</span>
-            <select id="reportRange">
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="monthly" selected>Monthly</option>
-            </select>
-          </label>
-          <label class="field compact">
-            <span>Property</span>
-            <select id="reportProperty"></select>
-          </label>
-          <button id="exportCsvBtn" class="btn btn-soft" type="button"><i data-lucide="file-spreadsheet"></i>CSV</button>
-          <button id="exportExcelBtn" class="btn btn-soft" type="button"><i data-lucide="table"></i>Excel</button>
-          <button id="exportPdfBtn" class="btn btn-soft" type="button"><i data-lucide="file-text"></i>PDF</button>
-        </div>
-        <div id="reportSummary" class="metric-grid"></div>
-        <div class="reports-grid">
-          <section class="panel">
-            <div class="panel-heading"><h3>Occupancy report</h3><i data-lucide="percent"></i></div>
-            <div id="occupancyReport" class="bar-list"></div>
-          </section>
-          <section class="panel">
-            <div class="panel-heading"><h3>Revenue report</h3><i data-lucide="wallet-cards"></i></div>
-            <div id="revenueReport" class="bar-list"></div>
-          </section>
-          <section class="panel">
-            <div class="panel-heading"><h3>Booking report</h3><i data-lucide="clipboard-list"></i></div>
-            <div id="bookingReport" class="stack-list"></div>
-          </section>
-        </div>
-      </section>
+                <h2>
+                    Dashboard
+                </h2>
 
-      <section id="adminView" class="view">
-        <div class="admin-grid">
-          <section class="panel">
-            <div class="panel-heading"><h3>Properties</h3><i data-lucide="building-2"></i></div>
-            <form id="propertyForm" class="inline-form">
-              <input id="propertyName" type="text" placeholder="New property name" required>
-              <button class="btn btn-primary" type="submit"><i data-lucide="plus"></i>Add</button>
-            </form>
-            <div id="propertyList" class="stack-list"></div>
-          </section>
-          <section class="panel">
-            <div class="panel-heading"><h3>Room types</h3><i data-lucide="layers-3"></i></div>
-            <form id="roomTypeForm" class="stack-form">
-              <select id="typeProperty" required></select>
-              <input id="roomTypeName" type="text" placeholder="Room type" required>
-              <button class="btn btn-primary" type="submit"><i data-lucide="plus"></i>Add room type</button>
-            </form>
-          </section>
-          <section class="panel">
-            <div class="panel-heading"><h3>Inventory</h3><i data-lucide="bed-double"></i></div>
-            <form id="roomForm" class="stack-form">
-              <select id="roomProperty" required></select>
-              <select id="roomType" required></select>
-              <input id="roomName" type="text" placeholder="Room name" required>
-              <input id="roomCapacity" type="number" min="1" value="2" required>
-              <button class="btn btn-primary" type="submit"><i data-lucide="plus"></i>Add room</button>
-            </form>
-            <div id="roomList" class="stack-list inventory-list"></div>
-          </section>
-          <section class="panel">
-            <div class="panel-heading"><h3>Agents</h3><i data-lucide="users-round"></i></div>
-            <form id="agentForm" class="stack-form">
-              <input id="agentName" type="text" placeholder="Agent name" required>
-              <select id="agentRole">
-                <option value="agent">Agent</option>
-                <option value="admin">Admin</option>
-              </select>
-              <input id="agentPin" type="text" inputmode="numeric" placeholder="PIN" required>
-              <button class="btn btn-primary" type="submit"><i data-lucide="user-plus"></i>Add agent</button>
-            </form>
-            <div id="agentList" class="stack-list"></div>
-          </section>
-          <section class="panel panel-wide">
-            <div class="panel-heading"><h3>Override availability</h3><i data-lucide="ban"></i></div>
-            <form id="blockForm" class="search-panel">
-              <select id="blockProperty" required></select>
-              <select id="blockRoom" required></select>
-              <input id="blockFrom" type="date" required>
-              <input id="blockTo" type="date" required>
-              <input id="blockNotes" type="text" placeholder="Reason">
-              <button class="btn btn-primary" type="submit"><i data-lucide="lock"></i>Block</button>
-            </form>
-          </section>
-          <section class="panel">
-            <div class="panel-heading"><h3>Integrations</h3><i data-lucide="plug-zap"></i></div>
-            <div id="integrationList" class="integration-list"></div>
-          </section>
-        </div>
-      </section>
+            </div>
+
+            <div class="topbar-right">
+
+                <select id="propertyFilter">
+
+                    <option>
+                        Good Earth Homestay
+                    </option>
+
+                    <option>
+                        Camp Alpha
+                    </option>
+
+                </select>
+
+            </div>
+
+        </header>
+
+        <!-- DASHBOARD -->
+
+        <section class="dashboard-grid">
+
+            <div class="stat-card">
+
+                <h3>Available Rooms</h3>
+
+                <h1 id="availableRooms">
+                    0
+                </h1>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Active Holds</h3>
+
+                <h1 id="activeHolds">
+                    0
+                </h1>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Confirmed</h3>
+
+                <h1 id="confirmedBookings">
+                    0
+                </h1>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Occupancy</h3>
+
+                <h1 id="occupancy">
+                    0%
+                </h1>
+
+            </div>
+
+        </section>
+
+        <!-- CALENDAR TOOLBAR -->
+
+        <section class="calendar-toolbar">
+
+            <div class="toolbar-left">
+
+                <input
+                    type="date"
+                    id="checkIn"
+                >
+
+                <input
+                    type="date"
+                    id="checkOut"
+                >
+
+                <select id="roomTypeFilter">
+
+                    <option value="">
+                        All Room Types
+                    </option>
+
+                </select>
+
+                <button id="searchAvailability" class="btn-primary">
+
+                    Search Availability
+
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- CALENDAR -->
+
+        <section class="calendar-container">
+
+            <div id="calendarBoard">
+
+                <!-- Generated by JS -->
+
+            </div>
+
+        </section>
+
     </main>
 
-    <nav class="mobile-nav" aria-label="Mobile navigation">
-      <button class="mobile-nav-btn active" type="button" data-view="dashboard"><i data-lucide="layout-dashboard"></i><span>Home</span></button>
-      <button class="mobile-nav-btn" type="button" data-view="availability"><i data-lucide="calendar-days"></i><span>Calendar</span></button>
-      <button class="mobile-nav-fab" type="button" id="mobileBookingBtn" aria-label="New booking"><i data-lucide="plus"></i></button>
-      <button class="mobile-nav-btn" type="button" data-view="bookings"><i data-lucide="book-open-check"></i><span>Bookings</span></button>
-      <button class="mobile-nav-btn" type="button" data-view="search"><i data-lucide="search-check"></i><span>Search</span></button>
-    </nav>
-  </section>
+</div>
 
-  <div id="bookingModal" class="modal" hidden>
-    <form id="bookingForm" class="modal-card" autocomplete="off">
-      <div class="modal-head">
-        <div>
-          <p class="eyebrow">Reservation</p>
-          <h3 id="modalTitle">New booking</h3>
+<!-- RESERVATION DRAWER -->
+
+<aside id="reservationDrawer" class="reservation-drawer">
+
+    <div class="drawer-header">
+
+        <h2>
+            Reservation
+        </h2>
+
+    </div>
+
+    <div class="drawer-body">
+
+        <div class="form-group">
+
+            <label>
+                Guest Name
+            </label>
+
+            <input
+                type="text"
+                id="guestName"
+            >
+
         </div>
-        <button class="icon-btn" type="button" data-close-modal aria-label="Close"><i data-lucide="x"></i></button>
-      </div>
-      <input id="bookingId" type="hidden">
-      <div id="conflictWarning" class="conflict-warning" hidden></div>
-      <div class="form-grid">
-        <label class="field"><span>Guest Name</span><input id="guestName" type="text" required></label>
-        <label class="field"><span>Phone Number</span><input id="guestPhone" type="tel" required></label>
-        <label class="field"><span>Email</span><input id="guestEmail" type="email"></label>
-        <label class="field"><span>Number of Guests</span><input id="guestCount" type="number" min="1" value="2" required></label>
-        <label class="field"><span>Check-in Date</span><input id="checkInDate" type="date" required></label>
-        <label class="field"><span>Check-out Date</span><input id="checkOutDate" type="date" required></label>
-        <label class="field"><span>Property</span><select id="bookingProperty" required></select></label>
-        <label class="field"><span>Room Type</span><select id="bookingRoomType" required></select></label>
-        <label class="field"><span>Room</span><select id="bookingRoom" required></select></label>
-        <label class="field"><span>Booking Source</span><select id="bookingSource" required></select></label>
-        <label class="field"><span>Booking Status</span><select id="bookingStatus" required></select></label>
-        <label class="field"><span>Total Amount</span><input id="totalAmount" type="number" min="0" step="1" value="0"></label>
-        <label class="field"><span>Amount Paid</span><input id="amountPaid" type="number" min="0" step="1" value="0"></label>
-        <label class="field"><span>Balance Due</span><input id="balanceDue" type="number" readonly></label>
-      </div>
-      <label class="field"><span>Special Notes</span><textarea id="specialNotes" rows="3"></textarea></label>
-      <div id="bookingHistory" class="history-box" hidden></div>
-      <div class="modal-actions">
-        <button id="deleteBookingBtn" class="btn btn-danger" type="button" hidden><i data-lucide="trash-2"></i>Delete</button>
-        <button id="cancelBookingBtn" class="btn btn-soft" type="button" hidden><i data-lucide="circle-x"></i>Cancel booking</button>
-        <span class="modal-spacer"></span>
-        <button class="btn btn-soft" type="button" data-close-modal>Close</button>
-        <button class="btn btn-primary" type="submit"><i data-lucide="save"></i>Save booking</button>
-      </div>
-    </form>
-  </div>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        <div class="form-group">
+
+            <label>
+                Phone
+            </label>
+
+            <input
+                type="text"
+                id="guestPhone"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Status
+            </label>
+
+            <select id="bookingStatus">
+
+                <option>HOLD</option>
+
+                <option>CONFIRMED</option>
+
+                <option>CHECKED_IN</option>
+
+                <option>CHECKED_OUT</option>
+
+            </select>
+
+        </div>
+
+        <button class="btn-primary">
+
+            Save Reservation
+
+        </button>
+
+    </div>
+
+</aside>
+
+<script src="js/api.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/app.js"></script>
+
 </body>
 </html>
