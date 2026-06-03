@@ -3,26 +3,40 @@ async function buildCalendar(){
     const roomsResponse =
         await fetchRooms();
 
+    const bookingsResponse =
+        await fetchBookings();
+
     const selectedProperty =
         document.getElementById(
             "propertySelect"
         ).value;
 
     const rooms =
-    (roomsResponse.rooms || [])
-    .filter(
-        room =>
-            room.propertyId === selectedProperty
-    );
+        (roomsResponse.rooms || [])
+        .filter(
+            room =>
+                room.propertyId ===
+                selectedProperty
+        );
 
-console.log("ROOMS", rooms);
+    const roomIds =
+        rooms.map(
+            room => room.roomId
+        );
+
+    const bookings =
+        (bookingsResponse.bookings || [])
+        .filter(
+            booking =>
+                roomIds.includes(
+                    booking.roomId
+                )
+        );
 
     const board =
         document.getElementById(
             "calendarBoard"
         );
-
-    if(!board) return;
 
     board.innerHTML = "";
 
@@ -40,7 +54,7 @@ console.log("ROOMS", rooms);
                 Room
             </div>`;
 
-    for(let day = 1; day <= days; day++){
+    for(let day=1; day<=days; day++){
 
         header += `
             <div class="day-cell">
@@ -63,10 +77,27 @@ console.log("ROOMS", rooms);
                 ${room.roomName}
             </div>`;
 
-        for(let day = 1; day <= days; day++){
+        for(let day=1; day<=days; day++){
 
-            row +=
-            `<div class="day-cell available"></div>`;
+            const booking =
+                bookings.find(
+                    b =>
+                        b.roomId ===
+                        room.roomId
+                );
+
+            if(booking){
+
+                row +=
+                `<div class="day-cell booked"></div>`;
+
+            }
+            else{
+
+                row +=
+                `<div class="day-cell available"></div>`;
+
+            }
 
         }
 
@@ -76,6 +107,8 @@ console.log("ROOMS", rooms);
 
     });
 
-    board.appendChild(calendar);
+    board.appendChild(
+        calendar
+    );
 
 }
