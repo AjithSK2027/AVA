@@ -1,81 +1,95 @@
-async function buildCalendar() {
+async function buildCalendar(){
 
-    const roomsResponse =
-        await fetchRooms();
+const roomsResponse =
+    await fetchRooms();
 
-    const selectedProperty =
+const selectedProperty =
     document.getElementById(
         "propertySelect"
     ).value;
 
-    const rooms =
-    roomsResponse.rooms.filter(
+const rooms =
+    (roomsResponse.rooms || [])
+    .filter(
         room =>
-            room.PropertyID === selectedProperty
+            String(room.PropertyID).trim()
+            ===
+            String(selectedProperty).trim()
     );
 
-    const board =
-        document.getElementById(
-            "calendarBoard"
-        );
+const board =
+    document.getElementById(
+        "calendarBoard"
+    );
 
-    board.innerHTML = "";
+if(!board) return;
 
-    const days = 30;
+board.innerHTML = "";
 
-    const calendar =
-        document.createElement("div");
+const days = 30;
 
-    calendar.className =
-        "availability-calendar";
+const calendar =
+    document.createElement(
+        "div"
+    );
 
-    /* HEADER */
+calendar.className =
+    "availability-calendar";
 
-    let header =
-        `<div class="calendar-row header-row">
-            <div class="room-column">
-                Room
-            </div>`;
+let header =
+    <div class="calendar-row header-row">
+        <div class="room-column">
+            Room
+        </div>;
 
-    for(let day=1; day<=days; day++){
+for(
+    let day = 1;
+    day <= days;
+    day++
+){
 
-        header +=
-        `<div class="day-cell">
-            ${day}
-        </div>`;
+    header +=
+    <div class="day-cell">
+        ${day}
+    </div>;
+
+}
+
+header += "</div>";
+
+calendar.innerHTML =
+    header;
+
+rooms.forEach(room => {
+
+    let row =
+    <div class="calendar-row">
+
+        <div class="room-column">
+
+            ${room.RoomName}
+
+        </div>;
+
+    for(
+        let day = 1;
+        day <= days;
+        day++
+    ){
+
+        row +=
+        <div class="day-cell available"></div>;
 
     }
 
-    header += "</div>";
+    row += "</div>";
 
-    calendar.innerHTML = header;
+    calendar.innerHTML += row;
 
-    /* ROOMS */
+});
 
-    rooms.forEach(room => {
-
-        let row =
-        `<div class="calendar-row">
-
-            <div class="room-column">
-
-                ${room.roomName}
-
-            </div>`;
-
-        for(let day=1; day<=days; day++){
-
-            row +=
-            `<div class="day-cell available"></div>`;
-
-        }
-
-        row += "</div>";
-
-        calendar.innerHTML += row;
-
-    });
-
-    board.appendChild(calendar);
+board.appendChild(
+    calendar
+);
 
 }
