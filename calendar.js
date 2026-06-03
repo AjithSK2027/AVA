@@ -16,6 +16,7 @@ async function buildCalendar(){
                 ===
                 String(selectedProperty).trim()
         );
+    console.log(rooms);
 
     const board =
         document.getElementById(
