@@ -645,3 +645,15 @@ select:focus{
     background:#ECFDF5;
 
 }
+
+.booked{
+
+    background:#FECACA;
+
+}
+
+.available{
+
+    background:#DCFCE7;
+
+}
