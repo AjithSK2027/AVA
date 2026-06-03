@@ -5,7 +5,6 @@ initializeApp
 
 async function initializeApp(){
 
-```
 try{
 
     await loadProperties();
@@ -36,13 +35,11 @@ catch(error){
     );
 
 }
-```
 
 }
 
 async function updateDashboard(){
 
-```
 const roomsResponse =
     await fetchRooms();
 
@@ -129,13 +126,11 @@ document.getElementById(
     "occupancyRate"
 ).textContent =
     occupancy + "%";
-```
 
 }
 
 async function loadProperties(){
 
-```
 const response =
     await fetchProperties();
 
@@ -169,6 +164,5 @@ properties.forEach(property => {
     );
 
 });
-```
 
 }
