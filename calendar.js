@@ -62,7 +62,7 @@ console.log("ROOMS", rooms);
         `<div class="calendar-row">
 
             <div class="room-column">
-                ${room.RoomName}
+                ${room.roomName}
             </div>`;
 
         for(let day = 1; day <= days; day++){
