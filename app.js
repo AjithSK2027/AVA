@@ -98,3 +98,39 @@ const rooms =
     ).textContent = occupancy + "%";
 
 }
+
+async function loadProperties(){
+
+    const response =
+        await fetchProperties();
+
+    const properties =
+        response.properties || [];
+
+    const select =
+        document.getElementById(
+            "propertySelect"
+        );
+
+    select.innerHTML = "";
+
+    properties.forEach(property => {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.value =
+            property.PropertyID;
+
+        option.textContent =
+            property.PropertyName;
+
+        select.appendChild(
+            option
+        );
+
+    });
+
+}
