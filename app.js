@@ -1,168 +1,165 @@
 document.addEventListener(
-"DOMContentLoaded",
-initializeApp
+    "DOMContentLoaded",
+    initializeApp
 );
 
 async function initializeApp(){
 
-try{
+    try{
 
-    await loadProperties();
+        await loadProperties();
 
-    await updateDashboard();
+        await updateDashboard();
 
-    await buildCalendar();
+        await buildCalendar();
 
-    document
-        .getElementById("propertySelect")
-        .addEventListener(
-            "change",
-            async () => {
+        document
+            .getElementById("propertySelect")
+            .addEventListener(
+                "change",
+                async () => {
 
-                await updateDashboard();
+                    await updateDashboard();
 
-                await buildCalendar();
+                    await buildCalendar();
 
-            }
+                }
+            );
+
+    }
+    catch(error){
+
+        console.error(
+            "Initialization Error:",
+            error
         );
 
-}
-catch(error){
-
-    console.error(
-        "Initialization Error:",
-        error
-    );
-
-}
+    }
 
 }
 
 async function updateDashboard(){
 
-const roomsResponse =
-    await fetchRooms();
+    const roomsResponse =
+        await fetchRooms();
 
-const bookingsResponse =
-    await fetchBookings();
+    const bookingsResponse =
+        await fetchBookings();
 
-const selectedProperty =
+    const selectedProperty =
+        document.getElementById(
+            "propertySelect"
+        ).value;
+
+    const rooms =
+        (roomsResponse.rooms || [])
+        .filter(
+            room =>
+                String(room.PropertyID).trim()
+                ===
+                String(selectedProperty).trim()
+        );
+
+    const roomIds =
+        rooms.map(
+            room => room.RoomID
+        );
+
+    const bookings =
+        (bookingsResponse.bookings || [])
+        .filter(
+            booking =>
+                roomIds.includes(
+                    booking.RoomID
+                )
+        );
+
+    const confirmed =
+        bookings.filter(
+            booking =>
+                booking.Status ===
+                "CONFIRMED"
+        ).length;
+
+    const holds =
+        bookings.filter(
+            booking =>
+                booking.Status ===
+                "HOLD"
+        ).length;
+
+    const occupied =
+        confirmed + holds;
+
+    const available =
+        Math.max(
+            rooms.length - occupied,
+            0
+        );
+
+    const occupancy =
+        rooms.length
+            ? Math.round(
+                (occupied / rooms.length) * 100
+              )
+            : 0;
+
     document.getElementById(
-        "propertySelect"
-    ).value;
+        "availableRooms"
+    ).textContent =
+        available;
 
-const rooms =
-    (roomsResponse.rooms || [])
-    .filter(
-        room =>
-            String(room.PropertyID).trim()
-            ===
-            String(selectedProperty).trim()
-    );
+    document.getElementById(
+        "activeHolds"
+    ).textContent =
+        holds;
 
-const roomIds =
-    rooms.map(
-        room => room.RoomID
-    );
+    document.getElementById(
+        "confirmedBookings"
+    ).textContent =
+        confirmed;
 
-const bookings =
-    (bookingsResponse.bookings || [])
-    .filter(
-        booking =>
-            roomIds.includes(
-                booking.RoomID
-            )
-    );
-
-const confirmed =
-    bookings.filter(
-        booking =>
-            booking.Status ===
-            "CONFIRMED"
-    ).length;
-
-const holds =
-    bookings.filter(
-        booking =>
-            booking.Status ===
-            "HOLD"
-    ).length;
-
-const occupied =
-    confirmed + holds;
-
-const available =
-    Math.max(
-        rooms.length - occupied,
-        0
-    );
-
-const occupancy =
-    rooms.length
-        ? Math.round(
-            (
-                occupied /
-                rooms.length
-            ) * 100
-          )
-        : 0;
-
-document.getElementById(
-    "availableRooms"
-).textContent =
-    available;
-
-document.getElementById(
-    "activeHolds"
-).textContent =
-    holds;
-
-document.getElementById(
-    "confirmedBookings"
-).textContent =
-    confirmed;
-
-document.getElementById(
-    "occupancyRate"
-).textContent =
-    occupancy + "%";
+    document.getElementById(
+        "occupancyRate"
+    ).textContent =
+        occupancy + "%";
 
 }
 
 async function loadProperties(){
 
-const response =
-    await fetchProperties();
+    const response =
+        await fetchProperties();
 
-const properties =
-    response.properties || [];
+    const properties =
+        response.properties || [];
 
-const select =
-    document.getElementById(
-        "propertySelect"
-    );
-
-if(!select) return;
-
-select.innerHTML = "";
-
-properties.forEach(property => {
-
-    const option =
-        document.createElement(
-            "option"
+    const select =
+        document.getElementById(
+            "propertySelect"
         );
 
-    option.value =
-        property.PropertyID;
+    if(!select) return;
 
-    option.textContent =
-        property.PropertyName;
+    select.innerHTML = "";
 
-    select.appendChild(
-        option
-    );
+    properties.forEach(property => {
 
-});
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.value =
+            property.PropertyID;
+
+        option.textContent =
+            property.PropertyName;
+
+        select.appendChild(
+            option
+        );
+
+    });
 
 }
