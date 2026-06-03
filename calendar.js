@@ -9,14 +9,15 @@ async function buildCalendar(){
         ).value;
 
     const rooms =
-        (roomsResponse.rooms || [])
-        .filter(
-            room =>
-                String(room.PropertyID).trim()
-                ===
-                String(selectedProperty).trim()
-        );
-    console.log(rooms);
+    (roomsResponse.rooms || [])
+    .filter(
+        room =>
+            String(room.PropertyID).trim()
+            ===
+            String(selectedProperty).trim()
+    );
+
+console.log("ROOMS", rooms);
 
     const board =
         document.getElementById(
