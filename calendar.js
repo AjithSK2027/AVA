@@ -1,11 +1,73 @@
-function buildCalendar(){
+async function buildCalendar() {
+
+    const roomsResponse =
+        await fetchRooms();
+
+    const rooms =
+        roomsResponse.rooms;
 
     const board =
         document.getElementById(
             "calendarBoard"
         );
 
-    board.innerHTML =
-        "<h2>Calendar Coming Next</h2>";
+    board.innerHTML = "";
+
+    const days = 30;
+
+    const calendar =
+        document.createElement("div");
+
+    calendar.className =
+        "availability-calendar";
+
+    /* HEADER */
+
+    let header =
+        `<div class="calendar-row header-row">
+            <div class="room-column">
+                Room
+            </div>`;
+
+    for(let day=1; day<=days; day++){
+
+        header +=
+        `<div class="day-cell">
+            ${day}
+        </div>`;
+
+    }
+
+    header += "</div>";
+
+    calendar.innerHTML = header;
+
+    /* ROOMS */
+
+    rooms.forEach(room => {
+
+        let row =
+        `<div class="calendar-row">
+
+            <div class="room-column">
+
+                ${room.roomName}
+
+            </div>`;
+
+        for(let day=1; day<=days; day++){
+
+            row +=
+            `<div class="day-cell available"></div>`;
+
+        }
+
+        row += "</div>";
+
+        calendar.innerHTML += row;
+
+    });
+
+    board.appendChild(calendar);
 
 }
