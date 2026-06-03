@@ -5,13 +5,28 @@ document.addEventListener(
 
 async function initializeApp(){
 
-   try{
+    try{
 
-    await updateDashboard();
+        await loadProperties();
 
-    await buildCalendar();
+        await updateDashboard();
 
- }
+        await buildCalendar();
+
+        document
+            .getElementById("propertySelect")
+            .addEventListener(
+                "change",
+                async () => {
+
+                    await updateDashboard();
+
+                    await buildCalendar();
+
+                }
+            );
+
+    }
     catch(error){
 
         console.error(error);
