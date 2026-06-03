@@ -43,8 +43,17 @@ async function updateDashboard(){
     const bookingsResponse =
         await fetchBookings();
 
-    const rooms =
-        roomsResponse.rooms || [];
+    const selectedProperty =
+    document.getElementById(
+        "propertySelect"
+    ).value;
+
+const rooms =
+    (roomsResponse.rooms || [])
+    .filter(
+        room =>
+            room.PropertyID === selectedProperty
+    );
 
     const bookings =
         bookingsResponse.bookings || [];
