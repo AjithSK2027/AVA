@@ -5,19 +5,19 @@ document.addEventListener(
 
 async function initializeApp(){
 
-    try{
+   try{
 
-        await buildCalendar();
+    await updateDashboard();
 
-    }
-    catch(error){
-
-        console.error(error);
-
-    }
+    await buildCalendar();
 
 }
+catch(error){
 
+    console.error(error);
+
+}
+    
 async function updateDashboard(){
 
     const roomsResponse =
